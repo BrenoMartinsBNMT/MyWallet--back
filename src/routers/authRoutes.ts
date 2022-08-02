@@ -1,38 +1,26 @@
-import {Router} from 'express'
-import hasEmail from '../errors/errorsAuth';
+import { Router } from "express";
 
-const authRoutes = Router()
-authRoutes.post("/signUp",hasEmail);
+import { userLogout, userSignUp } from "../controllers/controllersAuth";
+import { hasNoEmail } from "../errors/errorsAuth";
+import middlewareValidatorSchema from "../middlewares/middlewareAuth";
+import { hasToken, ifHasEmail, userLogin } from "../repositorys/repositoryAuth";
+import { schemaSignIn, schemaSignUp } from "../schemas/schemasAuth";
 
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+const authRoutes = Router();
+authRoutes.post(
+  "/signUp",
+  middlewareValidatorSchema(schemaSignUp),
+  ifHasEmail,
+  userSignUp
+);
 
-  let infosUser = await db.collection("users").findOne({ email });
+authRoutes.post(
+  "/login",
+  middlewareValidatorSchema(schemaSignIn),
+  hasToken,
+  userLogin
+);
 
-  try {
-    if (!infosUser) {
-      return res.sendStatus(404);
-    }
-    await db.collection("login").deleteOne({ email });
+authRoutes.post("/logout", userLogout);
 
-    if (!bcrypt.compareSync(password, infosUser.password)) {
-      return res.sendStatus(401);
-    }
-    let token = uuidv4();
-    await db.collection("login").insertOne({ email, token });
-
-    return res.send({ token });
-  } catch {
-    return res.sendStatus(500);
-  }
-});
-app.post("/logout", async (req, res) => {
-  const { token } = req.body;
-
-  try {
-    let logoutUser = await db.collection("login").deleteOne({ token });
-    res.sendStatus(200);
-  } catch {
-    res.sendStatus(404);
-  }
-});
+export default authRoutes;

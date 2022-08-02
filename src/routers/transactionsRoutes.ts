@@ -3,9 +3,9 @@ import {
   addBalance,
   getTransactions,
   subsBalance,
-} from "../controllers/controllertransactions";
-import middlewareValidatorSchema from "../middlewares/middlewareAuth";
-import { authTransactions } from "../repositorys/repositoryTransactions";
+} from "../controllers/controllertransactions.js";
+import middlewareValidatorSchema from "../middlewares/middlewareAuth.js";
+import { authTransactions } from "../repositorys/repositoryTransactions.js";
 import {
   schemaBalance,
   schemaGetTransactions,

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { db } from "../../databases/dbPostgres";
+import { db } from "../../databases/dbPostgres.js";
 
 export async function userSignUp(req: Request, res: Response) {
   const { email, name, password } = req.body;

@@ -1,6 +1,6 @@
 import e, { NextFunction, Request, Response } from "express";
-import { db } from "../../databases/dbPostgres";
-import { hasEmail, hasNoEmail, Unauthorized } from "../errors/errorsAuth";
+import { db } from "../../databases/dbPostgres.js";
+import { hasEmail, hasNoEmail, Unauthorized } from "../errors/errorsAuth.js";
 import bcrypt from "bcrypt";
 import JWT from "jsonwebtoken";
 import dotenv from "dotenv";

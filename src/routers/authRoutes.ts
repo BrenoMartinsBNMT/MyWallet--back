@@ -1,10 +1,14 @@
 import { Router } from "express";
 
-import { userLogout, userSignUp } from "../controllers/controllersAuth";
-import { hasNoEmail } from "../errors/errorsAuth";
-import middlewareValidatorSchema from "../middlewares/middlewareAuth";
-import { hasToken, ifHasEmail, userLogin } from "../repositorys/repositoryAuth";
-import { schemaSignIn, schemaSignUp } from "../schemas/schemasAuth";
+import { userLogout, userSignUp } from "../controllers/controllersAuth.js";
+
+import middlewareValidatorSchema from "../middlewares/middlewareAuth.js";
+import {
+  hasToken,
+  ifHasEmail,
+  userLogin,
+} from "../repositorys/repositoryAuth.js";
+import { schemaSignIn, schemaSignUp } from "../schemas/schemasAuth.js";
 
 const authRoutes = Router();
 authRoutes.post(

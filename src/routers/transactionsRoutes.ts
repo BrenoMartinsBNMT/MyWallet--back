@@ -9,7 +9,7 @@ import { authTransactions } from "../repositorys/repositoryTransactions.js";
 import {
   schemaBalance,
   schemaGetTransactions,
-} from "../schemas/schemaTransactions";
+} from "../schemas/schemaTransactions.js";
 
 const transactionsRouter = Router();
 

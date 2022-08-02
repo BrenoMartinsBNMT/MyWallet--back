@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js","dev": "npx nodemon index.ts"
-  }
- ,
+    "start": "node dist/app.js",
+    "dev": "npx nodemon index.ts"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

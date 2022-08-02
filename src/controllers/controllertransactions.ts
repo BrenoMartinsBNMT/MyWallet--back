@@ -16,12 +16,17 @@ export async function getTransactions(
     );
 
     const transactions = await db.query(
-      "SELECT users.name as name, transactions.* FROM transactions JOIN users ON id = $1",
+      "SELECT  users.name as name, transactions.*  FROM transactions JOIN users ON id = $1",
       [idUser.rows[0].user_id]
     );
-
+    const balance = await db.query(
+      "SELECT SUM(value) as balance FROM transactions WHERE user_id = $1",
+      [idUser.rows[0].user_id]
+    );
+    console.log(balance.rows[0]);
     const transactionsFormated = {
       name: transactions.rows[0].name,
+
       infosTransactions: transactions.rows.map((element) => {
         return {
           type: element.type,
@@ -68,7 +73,7 @@ export async function subsBalance(req: Request, res: Response) {
 
     await db.query(
       "INSERT INTO transactions (type,user_id,value,description) VALUES ($1,$2,$3,$4)",
-      ["subs", idUser.rows[0].user_id, balance, description]
+      ["subs", idUser.rows[0].user_id, -balance, description]
     );
 
     res.sendStatus(201);

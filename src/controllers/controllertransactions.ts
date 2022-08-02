@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import db from "../../databases/dbPostgres";
+import { db } from "../../databases/dbPostgres";
 import dayjs from "dayjs";
 
 export async function getTransactions(

@@ -1,16 +1,11 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "strict": true,
-    "target": "ES2019",
-
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "removeComments": true,
+    "module": "es6",
+    "moduleResolution": "node",
+    "outDir": "./dist"
   },
-  "include": [
-    "./index.ts"
-  ]
+  "ts-node": {
+    "esm": true
+  }
 }

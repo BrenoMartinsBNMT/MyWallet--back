@@ -7,7 +7,7 @@
     "node": "16.13.1"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p .",
     "start": "node dist/app.js",
     "dev": "npx nodemon index.ts"
   },

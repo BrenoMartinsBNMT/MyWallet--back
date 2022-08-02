@@ -1,5 +1,5 @@
 import e, { NextFunction, Request, Response } from "express";
-import db from "../../databases/dbPostgres";
+import { db } from "../../databases/dbPostgres";
 import { hasEmail, hasNoEmail, Unauthorized } from "../errors/errorsAuth";
 import bcrypt from "bcrypt";
 import JWT from "jsonwebtoken";

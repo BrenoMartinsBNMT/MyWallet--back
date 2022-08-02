@@ -13,6 +13,6 @@ app.use(transactionsRouter);
 app.get("/", (req, res) => {
   res.send("funfando");
 });
-app.listen(process.env.PORT_APP, () => {
-  console.log("funfando em ", process.env.PORT_APP);
+app.listen(process.env.PORT, () => {
+  console.log("funfando em ", process.env.PORT);
 });

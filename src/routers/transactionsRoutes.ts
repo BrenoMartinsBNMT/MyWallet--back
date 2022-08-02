@@ -1,83 +1,35 @@
 import { Router } from "express";
+import {
+  addBalance,
+  getTransactions,
+  subsBalance,
+} from "../controllers/controllertransactions";
+import middlewareValidatorSchema from "../middlewares/middlewareAuth";
+import { authTransactions } from "../repositorys/repositoryTransactions";
+import {
+  schemaBalance,
+  schemaGetTransactions,
+} from "../schemas/schemaTransactions";
 
-const routerTransactions = Router();
+const transactionsRouter = Router();
 
-routerTransactions.post("/historico-de-transacoes");
+transactionsRouter.post(
+  "/transactions-history",
+  middlewareValidatorSchema(schemaGetTransactions),
+  authTransactions,
+  getTransactions
+);
 
-let { token } = req.body;
-let { email } = await db.collection("login").findOne({ token });
-if (!email) {
-  return res.sendStatus(401);
-}
-try {
-  let { name, transactions, balance } = await db
-    .collection("users")
-    .findOne({ email });
-
-  res.send({ name, transactions, balance });
-} catch {
-  res.sendStatus(404);
-}
-/* 
-app.post("/historico-de-transacoes/adicionar-saldo", async (req, res) => {
-  let { balance, token, description } = req.body;
-  try {
-    let { email } = await db.collection("login").findOne({ token });
-
-    let { transactions } = await db.collection("users").findOne({ email });
-
-    await db.collection("users").updateOne(
-      { email },
-
-      {
-        $set: {
-          transactions: [
-            ...transactions,
-            {
-              data: `${dayjs().get("month") + "/" + dayjs().get("date")}`,
-              description,
-              balance,
-              type: "add",
-            },
-          ],
-        },
-        $inc: { balance: balance },
-      }
-    );
-
-    res.sendStatus(201);
-  } catch {
-    res.sendStatus(403);
-  }
-});
-app.post("/historico-de-transacoes/retirar-saldo", async (req, res) => {
-  let { balance, token, description } = req.body;
-  try {
-    let { email } = await db.collection("login").findOne({ token });
-
-    let { transactions } = await db.collection("users").findOne({ email });
-
-    await db.collection("users").updateOne(
-      { email },
-
-      {
-        $set: {
-          transactions: [
-            ...transactions,
-            {
-              data: `${dayjs().get("month") + "/" + dayjs().get("date")}`,
-              description,
-              balance,
-              type: "subs",
-            },
-          ],
-        },
-        $inc: { balance: -balance },
-      }
-    );
-
-    res.sendStatus(201);
-  } catch {
-    res.sendStatus(403);
-  }
-}); */
+transactionsRouter.post(
+  "/transactions/addBalance",
+  middlewareValidatorSchema(schemaBalance),
+  authTransactions,
+  addBalance
+);
+transactionsRouter.post(
+  "/transactions/subsBalance",
+  middlewareValidatorSchema(schemaBalance),
+  authTransactions,
+  subsBalance
+);
+export default transactionsRouter;

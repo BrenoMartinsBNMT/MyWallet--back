@@ -1,8 +1,8 @@
 import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import authRoutes from "./src/routers/authRoutes";
-import transactionsRouter from "./src/routers/transactionsRoutes";
+import authRoutes from "./src/routers/authRoutes.js";
+import transactionsRouter from "./src/routers/transactionsRoutes.js";
 dotenv.config();
 const app = express();
 app.use(cors());

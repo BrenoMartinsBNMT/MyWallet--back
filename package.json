@@ -2,13 +2,11 @@
   "name": "projeto13-mywallet-back",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/index.js",
-    "postinstall": "tsc",
-    "watch-node": "nodemon dist/index.js",
-    "watch-ts": "tsc -w",
-    "deploy": "git add . && git commit -m Heroku && git push heroku master"
+    "start": "node .",
+    "build": "tsc",
+    "dev": "nodemon"
   },
   "engines": {
     "node": "16.13.1"
@@ -44,5 +42,8 @@
     "@types/express": "^4.17.13",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
+  } ,"nodemonConfig": {
+    "ext": "ts",
+    "exec": "npm run build && npm start"
   }
 }

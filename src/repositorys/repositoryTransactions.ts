@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { db } from "../../databases/dbPostgres.js";
+import db from "../../databases/dbPostgres.js";
 import { isTokenValid } from "../errors/errosTransactions.js";
 
 export async function authTransactions(

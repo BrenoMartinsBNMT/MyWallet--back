@@ -1,5 +1,5 @@
-import e, { NextFunction, Request, Response } from "express";
-import { db } from "../../databases/dbPostgres.js";
+import { NextFunction, Request, Response } from "express";
+import db from "../../databases/dbPostgres.js";
 import { hasEmail, hasNoEmail, Unauthorized } from "../errors/errorsAuth.js";
 import bcrypt from "bcrypt";
 import JWT from "jsonwebtoken";
@@ -21,7 +21,12 @@ export async function ifHasEmail(
     hasEmail(hasUser.rows[0]);
     next();
   } catch (e: any) {
-    return res.status(e.error).send(e.message);
+    if (e.error) {
+      return res.status(e.error).send(e.message);
+    }
+    if (!e.error) {
+      return res.send(e);
+    }
   }
 }
 
@@ -53,11 +58,7 @@ export async function hasToken(
     return res.sendStatus(201);
   } catch {}
 }
-export async function userLogin(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function userLogin(req: Request, res: Response) {
   try {
     const { email, password }: { email: string; password: string } = req.body;
 

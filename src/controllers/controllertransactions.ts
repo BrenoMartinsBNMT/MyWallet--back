@@ -1,12 +1,8 @@
-import { NextFunction, Request, Response } from "express";
-import { db } from "../../databases/dbPostgres.js";
+import { Request, Response } from "express";
+import db from "../../databases/dbPostgres.js";
 import dayjs from "dayjs";
 
-export async function getTransactions(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function getTransactions(req: Request, res: Response) {
   try {
     const { token } = req.body;
 

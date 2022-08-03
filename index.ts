@@ -1,4 +1,4 @@
-import express, { json } from "express";
+import express, { json, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./src/routers/authRoutes.js";
@@ -10,7 +10,7 @@ app.use(json());
 app.use(authRoutes);
 app.use(transactionsRouter);
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res: Response) => {
   res.send("funfando");
 });
 app.listen(process.env.PORT, () => {

@@ -37,13 +37,14 @@ export async function hasToken(
 ) {
   try {
     const { email }: { email: string } = req.body;
-    const passwordUser = await db.query(
+    const infosUser = await db.query(
       "SELECT id,email FROM users WHERE email = $1",
       [email]
     );
 
     const userHasToken = await db.query(
-      "SELECT token FROM sessions JOIN users ON users.id = sessions.user_id"
+      "SELECT token FROM sessions WHERE user_id = $1",
+      [infosUser.rows[0].id]
     );
 
     if (!userHasToken.rows[0]) {
@@ -51,13 +52,13 @@ export async function hasToken(
       return;
     }
     await db.query("UPDATE sessions SET token = $2 WHERE user_id = $1", [
-      passwordUser.rows[0].id,
+      infosUser.rows[0].id,
       JWT.sign(email, process.env.JWT_SECRET as string),
     ]);
 
     const updatedToken = await db.query(
       "SELECT token FROM sessions WHERE user_id= $1",
-      [passwordUser.rows[0].id]
+      [infosUser.rows[0].id]
     );
 
     return res.send(updatedToken.rows[0]);

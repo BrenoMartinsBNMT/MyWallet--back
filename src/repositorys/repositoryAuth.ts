@@ -60,7 +60,7 @@ export async function hasToken(
       [passwordUser.rows[0].id]
     );
 
-    return res.send(updatedToken.rows[0].token);
+    return res.send(updatedToken.rows[0]);
   } catch (e) {
     return res.send(e);
   }

@@ -38,8 +38,10 @@ export async function getTransactions(req: Request, res: Response) {
       });
     }
     return res.json({
-      balance: balance.rows[0].balance,
-      name: balance.rows[0].name,
+      infosBalance: {
+        balance: balance.rows[0].balance,
+        name: balance.rows[0].name,
+      },
     });
   } catch (e) {
     res.send(e);

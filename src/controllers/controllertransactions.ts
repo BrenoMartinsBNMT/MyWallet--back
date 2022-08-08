@@ -23,8 +23,6 @@ export async function getTransactions(req: Request, res: Response) {
     console.log(balance.rows);
     if (transactions.rowCount > 0) {
       const transactionsFormated = {
-        name: transactions.rows[0].name,
-
         infosTransactions: transactions.rows.map((element) => {
           return {
             type: element.type,

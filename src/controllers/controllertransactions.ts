@@ -12,15 +12,15 @@ export async function getTransactions(req: Request, res: Response) {
     );
 
     const transactions = await db.query(
-      "SELECT  users.name as name, transactions.*  FROM transactions JOIN users ON id = $1",
+      "SELECT  users.name as name, transactions.*  FROM transactions JOIN users ON user_id = $1",
       [idUser.rows[0].user_id]
     );
-
+    console.log(transactions.rows);
     const balance = await db.query(
       "SELECT balance,name FROM users WHERE id = $1",
       [idUser.rows[0].user_id]
     );
-    console.log(balance.rows);
+
     if (transactions.rowCount > 0) {
       const transactionsFormated = {
         infosTransactions: transactions.rows.map((element) => {
@@ -54,7 +54,7 @@ export async function addBalance(req: Request, res: Response) {
       "SELECT user_id FROM sessions WHERE token = $1",
       [token]
     );
-
+    console.log(idUser.rows[0].user_id);
     await db.query(
       "INSERT INTO transactions (type,user_id,value,description) VALUES ($1,$2,$3,$4)",
       ["add", idUser.rows[0].user_id, balance, description]
@@ -63,6 +63,7 @@ export async function addBalance(req: Request, res: Response) {
       balance,
       idUser.rows[0].user_id,
     ]);
+
     res.sendStatus(201);
   } catch (e) {
     res.send(e);

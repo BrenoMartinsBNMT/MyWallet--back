@@ -33,7 +33,7 @@ export async function getTransactions(req: Request, res: Response) {
         }),
       };
       return res.json({
-        balance: balance.rows[0],
+        infosBalance: balance.rows[0],
         transactionsFormated,
       });
     }

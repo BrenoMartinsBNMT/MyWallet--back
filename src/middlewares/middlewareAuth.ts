@@ -7,7 +7,7 @@ export default function middlewareValidatorSchema(schema: Schema) {
     if (error) {
       return res.status(422).send(
         error.details.map((element) => {
-          return element;
+          throw { message: "senha ou email incorretos!!!" };
         })
       );
     }

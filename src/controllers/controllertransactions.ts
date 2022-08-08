@@ -20,6 +20,7 @@ export async function getTransactions(req: Request, res: Response) {
       "SELECT balance,name FROM users WHERE id = $1",
       [idUser.rows[0].user_id]
     );
+    console.log(balance.rows);
     if (transactions.rowCount > 0) {
       const transactionsFormated = {
         name: transactions.rows[0].name,

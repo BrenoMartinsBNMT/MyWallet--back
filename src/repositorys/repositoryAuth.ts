@@ -65,8 +65,12 @@ export async function hasToken(
     );
 
     return res.send(updatedToken.rows[0]);
-  } catch (e) {
-    return res.send(e);
+  } catch (e: any) {
+    if (e.error) {
+      return res.status(e.error).send(e.message);
+    } else {
+      return res.send(e);
+    }
   }
 }
 export async function userLogin(req: Request, res: Response) {

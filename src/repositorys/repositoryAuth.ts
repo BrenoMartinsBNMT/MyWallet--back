@@ -36,9 +36,9 @@ export async function hasToken(
   next: NextFunction
 ) {
   try {
-    const { email }: { email: string } = req.body;
+    const { email, password }: { email: string; password: string } = req.body;
     const infosUser = await db.query(
-      "SELECT id,email FROM users WHERE email = $1",
+      "SELECT id,email,password FROM users WHERE email = $1",
       [email]
     );
 
@@ -50,6 +50,9 @@ export async function hasToken(
     if (!userHasToken.rows[0]) {
       next();
       return;
+    }
+    if (!bcrypt.compareSync(password, infosUser.rows[0].password)) {
+      Unauthorized();
     }
     await db.query("UPDATE sessions SET token = $2 WHERE user_id = $1", [
       infosUser.rows[0].id,

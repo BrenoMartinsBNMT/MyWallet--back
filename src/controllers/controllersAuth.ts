@@ -15,7 +15,7 @@ export async function userLogout(req: Request, res: Response) {
   const { token } = req.body;
 
   try {
-    await db.query("DELETE FROM sessons WHERE token = $1", [token]);
+    await db.query("DELETE FROM sessions WHERE token = $1", [token]);
     res.sendStatus(200);
   } catch {
     res.sendStatus(404);

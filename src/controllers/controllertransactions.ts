@@ -12,10 +12,10 @@ export async function getTransactions(req: Request, res: Response) {
     );
 
     const transactions = await db.query(
-      "SELECT  users.name as name, transactions.*  FROM transactions JOIN users ON user_id = $1",
+      "SELECT * FROM transactions WHERE user_id = $1",
       [idUser.rows[0].user_id]
     );
-
+    console.log(transactions.rowCount);
     const balance = await db.query(
       "SELECT balance,name FROM users WHERE id = $1",
       [idUser.rows[0].user_id]

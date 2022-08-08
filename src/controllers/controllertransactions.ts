@@ -15,27 +15,35 @@ export async function getTransactions(req: Request, res: Response) {
       "SELECT  users.name as name, transactions.*  FROM transactions JOIN users ON id = $1",
       [idUser.rows[0].user_id]
     );
+
     const balance = await db.query(
-      "SELECT SUM(value) as balance FROM transactions WHERE user_id = $1",
+      "SELECT balance,name FROM users WHERE id = $1",
       [idUser.rows[0].user_id]
     );
-    console.log(balance.rows[0]);
-    const transactionsFormated = {
-      name: transactions.rows[0].name,
+    if (transactions.rowCount > 0) {
+      const transactionsFormated = {
+        name: transactions.rows[0].name,
 
-      infosTransactions: transactions.rows.map((element) => {
-        return {
-          type: element.type,
-          value: element.value,
-          description: element.description,
-          date: dayjs(element.date).format("MM/YY"),
-        };
-      }),
-    };
-    console.log(transactionsFormated);
-    return res.json();
-  } catch {
-    res.sendStatus(404);
+        infosTransactions: transactions.rows.map((element) => {
+          return {
+            type: element.type,
+            value: element.value,
+            description: element.description,
+            date: dayjs(element.date).format("MM/YY"),
+          };
+        }),
+      };
+      return res.json({
+        balance: balance.rows[0],
+        transactionsFormated,
+      });
+    }
+    return res.json({
+      balance: balance.rows[0].balance,
+      name: balance.rows[0].name,
+    });
+  } catch (e) {
+    res.send(e);
   }
 }
 
@@ -52,7 +60,10 @@ export async function addBalance(req: Request, res: Response) {
       "INSERT INTO transactions (type,user_id,value,description) VALUES ($1,$2,$3,$4)",
       ["add", idUser.rows[0].user_id, balance, description]
     );
-
+    await db.query("UPDATE users SET balance = balance + $1 WHERE id = $2", [
+      balance,
+      idUser.rows[0].user_id,
+    ]);
     res.sendStatus(201);
   } catch (e) {
     res.send(e);
@@ -69,9 +80,12 @@ export async function subsBalance(req: Request, res: Response) {
 
     await db.query(
       "INSERT INTO transactions (type,user_id,value,description) VALUES ($1,$2,$3,$4)",
-      ["subs", idUser.rows[0].user_id, -balance, description]
+      ["subs", idUser.rows[0].user_id, balance, description]
     );
-
+    await db.query("UPDATE users SET balance = balance +$1 WHERE id = $2", [
+      -balance,
+      idUser.rows[0].user_id,
+    ]);
     res.sendStatus(201);
   } catch (e) {
     res.send(e);

@@ -4,11 +4,10 @@ import db from "../../databases/dbPostgres.js";
 
 export async function userSignUp(req: Request, res: Response) {
   const { email, name, password } = req.body;
-  await db.query("INSERT INTO users(name,email,password) VALUES ($1,$2,$3)", [
-    name,
-    email,
-    bcrypt.hashSync(password, 10),
-  ]);
+  await db.query(
+    "INSERT INTO users(name,email,password,balance) VALUES ($1,$2,$3,$4)",
+    [name, email, bcrypt.hashSync(password, 10), 0]
+  );
   res.sendStatus(201);
 }
 

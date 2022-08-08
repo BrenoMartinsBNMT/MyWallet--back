@@ -55,8 +55,15 @@ export async function hasToken(
       JWT.sign(email, process.env.JWT_SECRET as string),
     ]);
 
-    return res.sendStatus(201);
-  } catch {}
+    const updatedToken = await db.query(
+      "SELECT token FROM sessions WHERE user_id= $1",
+      [passwordUser.rows[0].id]
+    );
+
+    return res.send(updatedToken.rows[0].token);
+  } catch (e) {
+    return res.send(e);
+  }
 }
 export async function userLogin(req: Request, res: Response) {
   try {
